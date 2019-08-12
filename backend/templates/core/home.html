@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block body %}
+{% block header%}
+{% include 'core/includes/main_header.html' %}
+{% endblock %}
+<div class="section-white">
+	<div class="container">
+		<div class="row section-title">
+			<div class="col-md-8 col-md-offset-2 text-center">
+				<h2>Categorias</h2>
+			</div>
+		</div>
+		<div class="row">
+			{% for categoria in categorias %}
+			<div class="col-md-4">
+				<div class="card card-background" style="background-image: url('/media/{{categoria.imagem}}')">
+					<div class="content category-card">
+						<a href="{%url 'categoria_detail' categoria.slug %}">
+							<h2 class="card-title">{{categoria.categoria_title}}</h2>
+						</a>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+{% endblock %}

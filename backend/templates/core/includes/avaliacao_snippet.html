@@ -1,0 +1,103 @@
+{% load el_pagination_tags %}
+{% load humanize %}
+{% paginate avaliacoes %}
+{% for avaliacao in avaliacoes %}
+<div class="media-area">
+	<div class="media">
+		<a class="pull-left" href="#pablo">
+			<div class="avatar">
+				{% if avaliacao.autor.socialaccount_set.all %}
+				<img class="media-object" src="{{ avaliacao.autor.socialaccount_set.all.0.get_avatar_url }}" alt="...">
+				{% else %}
+				<img class="media-object" src="/media/{{ avaliacao.autor.customuser.image }}" alt="...">
+				{% endif %}
+			</div>
+		</a>
+		<div class="media-body">
+			{% if avaliacao.avaliacao_pontuacao == 0 %}
+			<i class="material-icons star text-gray">star</i>
+			<i class="material-icons star text-gray">star</i>
+			<i class="material-icons star text-gray">star</i>
+			<i class="material-icons star text-gray">star</i>
+			<i class="material-icons star text-gray">star</i>
+			{% elif avaliacao.avaliacao_pontuacao == 1 %}
+			<i class="material-icons star text-gold">star</i>
+			<i class="material-icons star text-gray">star</i>
+			<i class="material-icons star text-gray">star</i>
+			<i class="material-icons star text-gray">star</i>
+			<i class="material-icons star text-gray">star</i>
+			{% elif avaliacao.avaliacao_pontuacao == 2 %}
+			<i class="material-icons star text-gold">star</i>
+			<i class="material-icons star text-gold">star</i>
+			<i class="material-icons star text-gray">star</i>
+			<i class="material-icons star text-gray">star</i>
+			<i class="material-icons star text-gray">star</i>
+			{% elif avaliacao.avaliacao_pontuacao == 3 %}
+			<i class="material-icons star text-gold">star</i>
+			<i class="material-icons star text-gold">star</i>
+			<i class="material-icons star text-gold">star</i>
+			<i class="material-icons star text-gray">star</i>
+			<i class="material-icons star text-gray">star</i>
+			{% elif avaliacao.avaliacao_pontuacao == 4 %}
+			<i class="material-icons star text-gold">star</i>
+			<i class="material-icons star text-gold">star</i>
+			<i class="material-icons star text-gold">star</i>
+			<i class="material-icons star text-gold">star</i>
+			<i class="material-icons star text-gray">star</i>
+			{% elif avaliacao.avaliacao_pontuacao == 5 %}
+			<i class="material-icons star text-gold">star</i>
+			<i class="material-icons star text-gold">star</i>
+			<i class="material-icons star text-gold">star</i>
+			<i class="material-icons star text-gold">star</i>
+			<i class="material-icons star text-gold">star</i>
+			{% endif %}
+			<h4 class="media-heading">{{avaliacao.autor.first_name}} {{avaliacao.autor.last_name}} <small>· {{avaliacao.avaliacao_datahora|naturaltime}}</small></h4>
+			<p>{{avaliacao}}</p>
+
+			<div class="media-footer">
+				<a href="#pablo" class="btn btn-primary btn-simple pull-left">
+					<i class="material-icons">reply</i> Comentar
+				</a>
+				{% if avaliacao.total_likes > 0 %}
+				<a href="#pablo" class="btn btn-simple btn-danger pull-left">
+					<i class="material-icons">favorite</i> {{avaliacao.total_likes}}
+				</a>
+				{% else %}
+				<a href="#pablo" class="btn btn-default btn-simple pull-left">
+					<i class="material-icons">favorite</i> {{avaliacao.total_likes}}
+				</a>
+				{% endif %}
+			</div>
+			{% for comentario in avaliacao.comentario_set.all %}
+			<div class="media">
+				<a class="pull-left" href="#pablo">
+					<div class="avatar">
+						{% if comentario.usuario.socialaccount_set.all %}
+						<img class="media-object" src="{{ avaliacao.autor.socialaccount_set.all.0.get_avatar_url }}" alt="...">
+						{% else %}
+						<img class="media-object" src="/media/{{ avaliacao.autor.customuser.image }}" alt="...">
+						{% endif %}
+					</div>
+				</a>
+				<div class="media-body">
+					<h4 class="media-heading">{{comentario.usuario}} <small>· {{comentario.comentario_datahora|naturaltime}}</small></h4>
+
+					<p>{{comentario.comentario_text}}</p>
+
+					<div class="media-footer">
+						<a href="#pablo" class="btn btn-default btn-simple pull-left">
+							<i class="material-icons">favorite</i> 2
+						</a>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+{% empty %}
+<div class="space-50"></div>
+<h4 class="text-center">Ops, parece que esse fornecedor não tem nenhuma avaliação, seja o primeiro.</h4>
+<div class="space-50"></div>
+{% endfor %}
+{% show_more %}

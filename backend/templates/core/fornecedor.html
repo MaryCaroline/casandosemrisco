@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+
+{% block body %}
+{% block header %}
+{% include 'includes/simple_header.html' %}
+{% endblock %}
+<div class="profile-content">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-6 col-xs-offset-3">
+				<div class="profile">
+					<div class="avatar">
+						<img src="/media/{{fornecedor.logo}}" alt="Circle Image" class="img-circle img-responsive img-raised">
+					</div>
+					<div class="name">
+						<h3 class="title">{{empresa.razaosocial}}</h3>
+						<h6>{{empresa.tipo_empresa}}</h6>
+						<!--<a href="#pablo" class="btn btn-just-icon btn-simple btn-dribbble"><i class="fa fa-dribbble"></i></a>
+						<a href="#pablo" class="btn btn-just-icon btn-simple btn-twitter"><i class="fa fa-twitter"></i></a>
+						<a href="#pablo" class="btn btn-just-icon btn-simple btn-pinterest"><i class="fa fa-pinterest"></i></a>-->
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="description text-center">
+			<div class="rating-average">
+				{% if rating == 0 %}
+				<i class="material-icons star-border text-gray">star</i>
+				<i class="material-icons star-border text-gray">star</i>
+				<i class="material-icons star-border text-gray">star</i>
+				<i class="material-icons star-border text-gray">star</i>
+				<i class="material-icons star-border text-gray">star</i>
+				{% elif rating >= 1 and rating < 2 %}
+				<i class="material-icons star text-gold">star</i>
+				<i class="material-icons star-border text-gray">star</i>
+				<i class="material-icons star-border text-gray">star</i>
+				<i class="material-icons star-border text-gray">star</i>
+				<i class="material-icons star-border text-gray">star</i>
+				{% elif rating >= 2 and rating < 3 %}
+				<i class="material-icons star text-gold">star</i>
+				<i class="material-icons star text-gold">star</i>
+				<i class="material-icons star-border text-gray">star</i>
+				<i class="material-icons star-border text-gray">star</i>
+				<i class="material-icons star-border text-gray">star</i>
+				{% elif rating >= 3 and rating < 4 %}
+				<i class="material-icons star text-gold">star</i>
+				<i class="material-icons star text-gold">star</i>
+				<i class="material-icons star text-gold">star</i>
+				<i class="material-icons star-border text-gray">star</i>
+				<i class="material-icons star-border text-gray">star</i>
+				{% elif rating >= 4 and rating < 5 %}
+				<i class="material-icons star text-gold">star</i>
+				<i class="material-icons star text-gold">star</i>
+				<i class="material-icons star text-gold">star</i>
+				<i class="material-icons star text-gold">star</i>
+				<i class="material-icons star-border text-gray">star</i>
+				{% elif rating == 5 %}
+				<i class="material-icons star text-gold">star</i>
+				<i class="material-icons star text-gold">star</i>
+				<i class="material-icons star text-gold">star</i>
+				<i class="material-icons star text-gold">star</i>
+				<i class="material-icons star text-gold">star</i>
+				{% endif %}
+			</div>
+			<p>
+				<i class="material-icons">location_on</i>
+				{% for endereco in fornecedor.empresa.endereco.all %}
+				{% firstof endereco.logradouro %}, {% firstof endereco.numero %}, {% firstof endereco.logradouro.cidade %}
+				{%endfor%}
+			</p>
+
+			<p>
+				<i class="material-icons">phone</i>
+				{% for telefone in fornecedor.empresa.telefones.all %}
+				{% firstof telefone.numero %}
+				{%endfor%}
+			</p>
+		</div>
+
+		<div class="row">
+		<div class="space-50"></div>
+			<div class="col-md-8 col-md-offset-2">
+			<h3 class="title text-center avaliacoes-count">
+					{% if fornecedor.avaliacao_set.all.count > 1 %}
+					{{fornecedor.avaliacao_set.all.count}} Avaliações
+					{% else %}
+					{{fornecedor.avaliacao_set.all.count}} Avaliação
+					{% endif %}
+				</h3>
+				{% if request.user.is_authenticated %}
+				<div class="media media-post">
+					<a class="pull-left author" href="#pablo">
+						<div class="avatar">
+							{% if user.socialaccount_set.all.0 %}
+							<img class="media-object" alt="64x64" src="{{user.socialaccount_set.all.0.get_avatar_url}}">
+							{% else %}
+							<img class="media-object" alt="oi" src="/media/{{user.customuser.image}}">
+							{% endif %}
+						</div>
+					</a>
+					<div class="media-body">						
+						<div class="form-item rating-form">
+
+							<!-- RATING - Form -->
+							<form class="rating-form" id="rating-form" action="#" method="post" name="rating-movie">{% csrf_token %}
+								<fieldset class="form-group">
+									<legend class="form-legend">Rating:</legend>
+									<div class="form-item">
+										<input id="rating-5" name="rating" type="radio" data-error="rating-error" value="5" required="required"/>
+										<label for="rating-5" data-value="5">
+											<span class="rating-star">
+												<i class="material-icons star-border">star_border</i>
+												<i class="material-icons star">star</i>
+											</span>
+										</label>
+										<input id="rating-4" name="rating" type="radio" data-error="rating-error" value="4" required="required"/>
+										<label for="rating-4" data-value="4">
+											<span class="rating-star">
+												<i class="material-icons star-border">star_border</i>
+												<i class="material-icons star">star</i>
+											</span>
+										</label>
+										<input id="rating-3" name="rating" type="radio" data-error="rating-error" value="3" required="required" />
+										<label for="rating-3" data-value="3">
+											<span class="rating-star">
+												<i class="material-icons star-border">star_border</i>
+												<i class="material-icons star">star</i>
+											</span>
+										</label>
+										<input id="rating-2" name="rating" type="radio" data-error="rating-error" value="2" required="required" />
+										<label for="rating-2" data-value="2">
+											<span class="rating-star">
+												<i class="material-icons star-border">star_border</i>
+												<i class="material-icons star">star</i>
+											</span>
+										</label>
+										<input id="rating-1" name="rating" type="radio" data-error="rating-error" value="1" required="required" />
+										<label for="rating-1" data-value="1">
+											<span class="rating-star">
+												<i class="material-icons star-border">star_border</i>
+												<i class="material-icons star">star</i>
+											</span>
+										</label>
+									</div>
+									<div id="rating-error">
+									</div>
+									<div class="form-group form-rose is-empty"><textarea id="avaliacao" name="avaliacao" class="form-control" placeholder="Escreva algo sobre o fornecedor..." rows="6" required="required"></textarea></div>
+									<div class="media-footer">
+										<button type="button" id="rating-form-btn" class="btn btn-rose btn-wd pull-right">Postar</button>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+					</div>
+				</div> <!-- end media-post -->
+				{% else %}
+				<p class="text-center">Parece que você ainda não tem uma conta, faça login para postar sua primeira avaliação.</p>
+				<div class="text-center">
+					<div class="media-body">
+						<form class="form" method="POST" action="/">
+							<div class="media-footer">
+								<h6>Entrar com</h6>
+								{% with url=request.path %}
+								<a href="{% provider_login_url 'facebook' method='js_sdk' next=url %}" class="btn btn-just-icon btn-round btn-facebook">
+									<i class="fa fa-facebook-square"></i>
+									<div class="ripple-container"></div>
+								</a>
+								<a href="{% provider_login_url 'google' method='js_sdk' next=url %}" class="btn btn-just-icon btn-round btn-google">
+									<i class="fa fa-google-plus-square"></i>
+								</a>
+								{% endwith %}
+							</div>
+						</form>
+					</div><!-- end media-body -->
+				</div>
+				{% endif %}
+			</div>
+			<div class="col-md-8 col-md-offset-2 avaliacoes">
+				<div class="endless_page_template">
+					{% include page_template %}
+				</div>
+				<div class="space-50"></div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/el-pagination.js"></script>
+<script src="/static/js/scripts.js"></script>
+<script>
+	$(document).ready(function() {
+		$('.avaliacoes').endlessPaginate({
+			pageSelector: '.avaliacoes'
+            //paginateOnScroll: true,
+            //paginateOnScrollMargin: ($('body').height() - $('.avaliacoes').offset().top + $('.avaliacoes').height())
+        });
+	});
+	$("#rating-form").validate({
+		rules: {
+			avaliacao: {
+				required: true,
+				minlength: 10
+			},
+			rating:{
+				required: true
+			}
+		},
+		messages: {
+			rating: "Ops, parece que você esqueceu de avaliar, marque as estrelas acima",
+			avaliacao: {
+				required: "Escreva uma avaliação",
+				minlength: "Sua avaliação deve ter mais que 15 caracteres."
+			}
+		},
+		errorElement : 'div',
+		errorPlacement: function(error, element) {
+			var placement = $(element).data('error');
+					if (element.attr("name") == "rating" )  //Id of input field
+						error.appendTo('#rating-error');
+					else{
+						if (placement) {
+							$(placement).append(error)
+						} else {
+							error.insertAfter(element);
+						}
+					}
+				}
+			});
+
+</script>
+{% endblock %}
