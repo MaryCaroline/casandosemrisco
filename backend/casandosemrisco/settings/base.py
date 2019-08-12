@@ -68,7 +68,7 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
     'fields': 'picture,name', 
 }
 
-SOCIAL_AUTH_FACEBOOK_API_VERSION = '2.8'
+SOCIAL_AUTH_USER_MODEL = 'users.User'
 
 ROOT_URLCONF = 'casandosemrisco.urls'
 
